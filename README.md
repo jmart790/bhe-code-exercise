@@ -1,40 +1,101 @@
-# BHE Software Engineer Coding Exercise
+# Prime Finder Challenge
+```
+//////    //////   /////   ////////   /////      /////  /////  /////    /////   /////   /////    
+//   //   //   //   //    //  //  //  //         //      //    //  //   //  //  //      //  //
+//   //   //   //   //    //  //  //  //         //      //    //  //   //   /  //      //  //
+/////     /////     //    //      //  /////      /////   //    //  //   //   /  /////   /////
+//        // //     //    //      //  //         //      //    //  //   //   /  //      // //
+//        //  //    //    //      //  //         //      //    //  //   //   /  //      //  //
+//        //   //  /////  //      //  /////      //     /////  //  //   /////   /////   //   //
 
-## The Sieve of Eratosthenes
+        ,-.
+        / \  `.  __..-,O
+       :   \ --''_..-'.'
+       |    . .-' `. '.
+       :     .     .`.'
+        \     `.  /  ..
+         \      `.   ' .
+          `,       `.   \
+         ,|,`.        `-.\
+        '.||  ``-...__..-`
+         |  |
+         |__|
+         /||\
+        //||\\
+       // || \\
+    __//__||__\\__
+   '--------------'
+                              
 
-Prime numbers have many modern day applications and a long history in 
-mathematics. Utilizing your own resources, research the sieve of Eratosthenes,
-an algorithm for generating prime numbers. Based on your research, implement 
-an API that allows the caller to retrieve the Nth prime number.
-Some stub code and a test suite have been provided as a convenience. However, 
-you are encouraged to deviate from Eratosthenes's algorithm, modify the 
-existing functions/methods, or anything else that might showcase your ability; 
-provided the following requirements are satisfied.
+```
 
-You must author your work in Go, JavaScript/TypeScript, Python, or C# - all 
-other language submissions will be rejected. Stub code has been provided, so 
-please choose from one of the provided language stubs that is most 
-relevant to your skill set and the position you are applying for.
+**Table of Contents**  
+1. [Overview](#overview)  
+2. [How to Build](#how-to-build)  
+3. [How to Run Tests](#how-to-run-tests)  
+4. [Design Choices & Rationale](#design-choices--rationale)  
+5. [Future Enhancements](#future-enhancements)
 
-### Requirements
+---
 
-- Fork this repo to implement your solution
-- The library package provides an API for retrieving the Nth prime number using 0-based indexing where the 0th prime number is 2
-- Interviewers must be able to execute a suite of tests
-  - Go: `go test ./...`
-  - C#: `dotnet test Sieve.Tests`
-  - Javascript: `npm run test`
-  - Python: `python -m unittest test_sieve.py`
-- Your solution is committed to your project's `main` branch, no uncommitted changes or untracked files please
-- Submit the link to your public fork for review
+## Overview
 
-### Considerations
+This project implements an API to retrieve the *n-th prime number* using **0-based indexing** (where the 0th prime is 2). The code **does not** rely on the Sieve of Eratosthenes; instead, it uses a **trial-division** approach, complete with **6k ± 1** optimizations and a small bootstrap of primes. The result is a codebase that’s more **readable** and **modular** than a single large sieve, while still being able to handle moderately large prime queries.
 
-You may add more tests or restructure existing tests, but you may NOT change or remove
-the existing test outcomes; eg- f(0)=2, f(19)=71, f(99)=541, ..., f(10000000)=179424691 
+Additionally, there is a **fun ASCII art** feature in the test output showing whether your tests have passed or failed.
 
-During the technical interview, your submission will be discussed, and you will be evaluated in the following areas:
+---
 
-- Technical ability
-- Communication skills
-- Work habits and complementary skills
+## How to Build
+
+1. **Clone** or **download** the repository:
+   `git clone <your-fork-url>.git`
+   `cd <your-repository-folder>`
+
+2.	Install Dependencies
+    `npm install`
+  
+
+## How to Run Tests
+
+1. `npm run test`
+
+## Design Choices & Rationale
+
+### Non-Eratosthenes Method
+- The instructions allowed for alternative prime-finding algorithms.
+- I chose a trial-division approach using:
+- A 6k ± 1 technique to skip multiples of 2 and 3.
+- A small “bootstrap” prime list to speed up checks for larger primes.
+- This approach is more memory-friendly than a naive sieve for large ranges, while keeping the code straightforward.
+
+### Modular, Readable Code
+-	Functions are kept small and descriptive (isPrimeWithSmallPrimes, getPrimeForSmallIndex, etc.).
+-	Loops avoid endless while(true) or for(...; true; ...) when possible, in favor of clearer loop conditions.
+-	I like to write code similar to how we write in real life and avoid nesting as much as possible. I learned this from some ruby writing style I read years ago but for the life of me I cannot find it.
+    
+Example
+
+  ```js
+  const isJoshARightFit = superComplexFunction(knowledge, openness, charm, passion);
+  if (!isJoshARightFit) return;
+
+  sendJoshOffer();
+  sendJoshLaptop();
+  sendJoshCoolHoodieAndStickers();
+  handleStartDate();
+  // ...more logic 
+  ```
+
+### Trade-Offs
+-	Performance: Pure trial division is slower for very large values of n, compared to advanced methods like the segmented sieve.
+-	Ease of Understanding: This code is simpler to follow than typical sieving. I am not a mathematician but I can understand this.
+
+### Future Enhancements
+- My first enhancement would be to utilize Typescript. I would have if the instructions did not already specify javascript as an option to use.
+- Performance: We would need to implement a better performant algorithm (most likely Eratosthenes's algorithm) in order to handle larger number. The true challenge there IMO is to make it readable. As readability is one of the most important components of writing good code.
+- It would be nice to see how long each test case took to complete and also a graph which includes them all.
+
+### Notes
+- Radar Asci art borrowed from https://ascii.co.uk/art/radar
+- A combination of research of Eratosthenes's algorithm and similar algorithm's and assistance with ai to create the math logic. I restructured much of it to make it readable and easy to update.
