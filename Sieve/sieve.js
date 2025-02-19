@@ -66,17 +66,15 @@ function findPrimeUsingSixStepLoop(smallPrimes, zeroBasedIndex, currentPrimeCoun
 }
 
 /**
- * A "basic" trial division check for generating the small prime list itself.
+ * Checks if a number is prime using trial division.
  */
-function isNumberPrime(candidateNumber, listOfPrimes) {
-  if (candidateNumber < 2) return false;
-  const sqrtCandidate = Math.sqrt(candidateNumber);
+function isNumberPrime(candidate, primeList) {
+  if (candidate < 2) return false;
+  const sqrtCandidate = Math.sqrt(candidate);
 
-  for (const prime of listOfPrimes) {
+  for (const prime of primeList) {
     if (prime > sqrtCandidate) break;
-    if (candidateNumber % prime === 0) {
-      return false;
-    }
+    if (candidate % prime === 0) return false;
   }
 
   return true;
