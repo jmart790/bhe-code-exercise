@@ -2,10 +2,10 @@
  * Retrieves small primes quickly.
  * Uses an array lookup instead of multiple `if` statements.
  */
-function getPrimeForSmallIndex(zeroBasedIndex) {
-  if (zeroBasedIndex < 0) throw new Error("Index cannot be negative.");
+function getPrimeForSmallIndex(primeIndex) {
+  if (primeIndex < 0) throw new Error("Index cannot be negative.");
   const predefinedPrimes = [2, 3, 5, 7]; 
-  return predefinedPrimes[zeroBasedIndex] ?? null;
+  return predefinedPrimes[primeIndex] ?? null;
 }
 
 /**
@@ -31,19 +31,19 @@ function generateSmallPrimesUpTo50000() {
  * Finds the n-th prime using a 6k ± 1 stepping approach.
  * 
  * @param {number[]} smallPrimes - An array of small primes used for trial division.
- * @param {number} zeroBasedIndex - The prime index we want (0-based).
+ * @param {number} primeIndex - The prime index we want (0-based).
  * @param {number} currentPrimeCount - How many primes we've already counted so far.
- * @returns {number} - The actual prime at position zeroBasedIndex (0-based).
+ * @returns {number} - The actual prime at position primeIndex (0-based).
  */
-function findPrimeUsingSixStepLoop(smallPrimes, zeroBasedIndex, primeCountSoFar) {
-  for (let index = 1; primeCountSoFar <= zeroBasedIndex; index++) {
+function findPrimeUsingSixStepLoop(smallPrimes, primeIndex, primeCountSoFar) {
+  for (let index = 1; primeCountSoFar <= primeIndex; index++) {
     const candidateA = 6 * index - 1;
     const candidateB = 6 * index + 1;
 
     for (const candidate of [candidateA, candidateB]) {
       if (isNumberPrime(candidate, smallPrimes)) {
         primeCountSoFar++;
-        if (primeCountSoFar === zeroBasedIndex + 1) return candidate;
+        if (primeCountSoFar === primeIndex + 1) return candidate;
       }
     }
   }
@@ -76,18 +76,18 @@ function isNumberPrime(candidate, primeList) {
  *   ...
  *   // NthPrime(100000000) => 2038074751 (theoretically, but extremely slow in JS).
  */
-function findNthPrime(zeroBasedIndex) {
-  const smallIndexResult = getPrimeForSmallIndex(zeroBasedIndex);
+function findNthPrime(primeIndex) {
+  const smallIndexResult = getPrimeForSmallIndex(primeIndex);
   if (smallIndexResult !== null) return smallIndexResult; 
   
   const smallPrimes = generateSmallPrimesUpTo50000();
 
   let primeCountSoFar = 2; // we've already counted [2, 3].
 
-  if (zeroBasedIndex === 2) return 5; // 2nd prime
-  if (zeroBasedIndex === 3) return 7; // 3rd prime
+  if (primeIndex === 2) return 5; // 2nd prime
+  if (primeIndex === 3) return 7; // 3rd prime
 
-  const nthPrime = findPrimeUsingSixStepLoop(smallPrimes, zeroBasedIndex, primeCountSoFar, isNumberPrime);
+  const nthPrime = findPrimeUsingSixStepLoop(smallPrimes, primeIndex, primeCountSoFar);
 
   return nthPrime;
 }
