@@ -81,15 +81,9 @@ function findNthPrime(primeIndex) {
   if (smallIndexResult !== null) return smallIndexResult; 
   
   const smallPrimes = generateSmallPrimesUpTo50000();
-
   let primeCountSoFar = 2; // we've already counted [2, 3].
 
-  if (primeIndex === 2) return 5; // 2nd prime
-  if (primeIndex === 3) return 7; // 3rd prime
-
-  const nthPrime = findPrimeUsingSixStepLoop(smallPrimes, primeIndex, primeCountSoFar);
-
-  return nthPrime;
+  return findPrimeUsingSixStepLoop(smallPrimes, primeIndex, primeCountSoFar);
 }
 
 module.exports = {
