@@ -9,22 +9,19 @@ function getPrimeForSmallIndex(zeroBasedIndex) {
 }
 
 /**
- * Generates all primes up to 50k using a mini 6k±1 trial-division approach.
- * This is still not a Sieve of Eratosthenes, just skipping multiples of 2 and 3.
- * 
- * We do this once to bootstrap set of primes to test large candidates quickly.
+ * Generates small primes up to 50,000 using trial division.
  */
 function generateSmallPrimesUpTo50000() {
   const smallPrimes = [2, 3];
 
   for (let sixStepIndex = 1; 6 * sixStepIndex + 1 <= 50000; sixStepIndex++) {
     const candidateA = 6 * sixStepIndex - 1;
-    const isCandidateAPrime = isNumberPrime(candidateA, smallPrimes);
-    if (isCandidateAPrime) smallPrimes.push(candidateA);
-    
     const candidateB = 6 * sixStepIndex + 1;
-    const isCandidateBPrime = isNumberPrime(candidateB, smallPrimes);
-    if (isCandidateBPrime) smallPrimes.push(candidateB);
+
+    [candidateA, candidateB].forEach(candidate => {
+      if (isNumberPrime(candidate, smallPrimes)) 
+        smallPrimes.push(candidate);
+    });
   }
 
   return smallPrimes;
