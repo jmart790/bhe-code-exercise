@@ -1,8 +1,11 @@
+/**
+ * Retrieves small primes quickly.
+ * Uses an array lookup instead of multiple `if` statements.
+ */
 function getPrimeForSmallIndex(zeroBasedIndex) {
   if (zeroBasedIndex < 0) throw new Error("Index cannot be negative.");
-  if (zeroBasedIndex === 0) return 2;
-  if (zeroBasedIndex === 1) return 3;
-  return null;
+  const predefinedPrimes = [2, 3, 5, 7]; 
+  return predefinedPrimes[zeroBasedIndex] ?? null;
 }
 
 /**
@@ -38,6 +41,8 @@ function generateSmallPrimesUpTo50000() {
  * @returns {number} - The actual prime at position zeroBasedIndex (0-based).
  */
 function findPrimeUsingSixStepLoop(smallPrimes, zeroBasedIndex, currentPrimeCount, isNumberPrime) {
+
+  console.log({ smallPrimes, zeroBasedIndex, currentPrimeCount, isNumberPrime, smallPrimesCount: smallPrimes.length });
   
   for (let sixStepIndex = 1; currentPrimeCount < zeroBasedIndex + 1; sixStepIndex++) {
     const candidateA = 6 * sixStepIndex - 1;
@@ -92,7 +97,7 @@ function isNumberPrime(candidateNumber, listOfPrimes) {
 function findNthPrime(zeroBasedIndex) {
   const smallIndexResult = getPrimeForSmallIndex(zeroBasedIndex);
   if (smallIndexResult !== null) return smallIndexResult; 
-
+  
   const smallPrimes = generateSmallPrimesUpTo50000();
 
   let primeCountSoFar = 2; // we've already counted [2, 3].
