@@ -16,11 +16,11 @@ function generateSmallPrimesUpTo50000() {
 
   for (let sixStepIndex = 1; 6 * sixStepIndex + 1 <= 50000; sixStepIndex++) {
     const candidateA = 6 * sixStepIndex - 1;
-    const isCandidateAPrime = isPrimeCandidateBasic(candidateA, smallPrimes);
+    const isCandidateAPrime = isNumberPrime(candidateA, smallPrimes);
     if (isCandidateAPrime) smallPrimes.push(candidateA);
     
     const candidateB = 6 * sixStepIndex + 1;
-    const isCandidateBPrime = isPrimeCandidateBasic(candidateB, smallPrimes);
+    const isCandidateBPrime = isNumberPrime(candidateB, smallPrimes);
     if (isCandidateBPrime) smallPrimes.push(candidateB);
   }
 
@@ -34,14 +34,14 @@ function generateSmallPrimesUpTo50000() {
  * @param {number[]} smallPrimes - An array of small primes used for trial division.
  * @param {number} zeroBasedIndex - The prime index we want (0-based).
  * @param {number} currentPrimeCount - How many primes we've already counted so far.
- * @param {function} isPrimeWithSmallPrimes - A helper to check primality against smallPrimes.
+ * @param {function} isNumberPrime - A helper to check primality against smallPrimes.
  * @returns {number} - The actual prime at position zeroBasedIndex (0-based).
  */
-function findPrimeUsingSixStepLoop(smallPrimes, zeroBasedIndex, currentPrimeCount, isPrimeWithSmallPrimes) {
+function findPrimeUsingSixStepLoop(smallPrimes, zeroBasedIndex, currentPrimeCount, isNumberPrime) {
   
   for (let sixStepIndex = 1; currentPrimeCount < zeroBasedIndex + 1; sixStepIndex++) {
     const candidateA = 6 * sixStepIndex - 1;
-    const isCandidateAWithSmallPrimes = isPrimeWithSmallPrimes(candidateA, smallPrimes);
+    const isCandidateAWithSmallPrimes = isNumberPrime(candidateA, smallPrimes);
 
     if (isCandidateAWithSmallPrimes) {
       currentPrimeCount++;
@@ -50,7 +50,7 @@ function findPrimeUsingSixStepLoop(smallPrimes, zeroBasedIndex, currentPrimeCoun
     }
 
     const candidateB = 6 * sixStepIndex + 1;
-    const isCandidateBWithSmallPrimes = isPrimeWithSmallPrimes(candidateB, smallPrimes);
+    const isCandidateBWithSmallPrimes = isNumberPrime(candidateB, smallPrimes);
 
     if (isCandidateBWithSmallPrimes) {
       currentPrimeCount++;
@@ -61,33 +61,13 @@ function findPrimeUsingSixStepLoop(smallPrimes, zeroBasedIndex, currentPrimeCoun
 }
 
 /**
- * Checks if 'candidateNumber' is prime by only dividing
- * by the small prime list (up to 50k) we generated.
- *
- * If none of those primes (<= sqrt(candidateNumber)) divides 'candidateNumber',
- * it is prime.
+ * A "basic" trial division check for generating the small prime list itself.
  */
-function isPrimeWithSmallPrimes(candidateNumber, smallPrimes) {
+function isNumberPrime(candidateNumber, listOfPrimes) {
   if (candidateNumber < 2) return false;
   const sqrtCandidate = Math.sqrt(candidateNumber);
 
-  for (const prime of smallPrimes) {
-    if (prime > sqrtCandidate) break;
-    if (candidateNumber % prime === 0) {
-      return false; 
-    }
-  }
-
-  return true;
-}
-
-/**
- * A "basic" trial division check for generating the small prime list itself.
- */
-function isPrimeCandidateBasic(candidateNumber, knownSmallPrimes) {
-  const sqrtCandidate = Math.sqrt(candidateNumber);
-
-  for (const prime of knownSmallPrimes) {
+  for (const prime of listOfPrimes) {
     if (prime > sqrtCandidate) break;
     if (candidateNumber % prime === 0) {
       return false;
@@ -120,7 +100,7 @@ function findNthPrime(zeroBasedIndex) {
   if (zeroBasedIndex === 2) return 5; // 2nd prime
   if (zeroBasedIndex === 3) return 7; // 3rd prime
 
-  const nthPrime = findPrimeUsingSixStepLoop(smallPrimes, zeroBasedIndex, primeCountSoFar, isPrimeWithSmallPrimes);
+  const nthPrime = findPrimeUsingSixStepLoop(smallPrimes, zeroBasedIndex, primeCountSoFar, isNumberPrime);
 
   return nthPrime;
 }
