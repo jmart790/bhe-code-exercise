@@ -35,15 +35,15 @@ function generateSmallPrimesUpTo50000() {
  * @param {number} currentPrimeCount - How many primes we've already counted so far.
  * @returns {number} - The actual prime at position primeIndex (0-based).
  */
-function findPrimeUsingSixStepLoop(smallPrimes, primeIndex, primeCountSoFar) {
-  for (let index = 1; primeCountSoFar <= primeIndex; index++) {
+function findPrimeUsingSixStepLoop(smallPrimes, primeIndex, currentPrimeCount) {
+  for (let index = 1; currentPrimeCount <= primeIndex; index++) {
     const candidateA = 6 * index - 1;
     const candidateB = 6 * index + 1;
 
     for (const candidate of [candidateA, candidateB]) {
       if (isNumberPrime(candidate, smallPrimes)) {
-        primeCountSoFar++;
-        if (primeCountSoFar === primeIndex + 1) return candidate;
+        currentPrimeCount++;
+        if (currentPrimeCount === primeIndex + 1) return candidate;
       }
     }
   }
@@ -81,9 +81,9 @@ function findNthPrime(primeIndex) {
   if (smallIndexResult !== null) return smallIndexResult; 
   
   const smallPrimes = generateSmallPrimesUpTo50000();
-  let primeCountSoFar = 2; // we've already counted [2, 3].
+  let currentPrimeCount = 2; // we've already counted [2, 3].
 
-  return findPrimeUsingSixStepLoop(smallPrimes, primeIndex, primeCountSoFar);
+  return findPrimeUsingSixStepLoop(smallPrimes, primeIndex, currentPrimeCount);
 }
 
 module.exports = {
